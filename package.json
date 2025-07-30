@@ -8,13 +8,13 @@
     "name": "Git Ninja Team"
   },
   "license": "MIT",
-  "homepage": "https://github.com/your-username/git-ninja",
+  "homepage": "https://github.com/kabirkhyrul/git-ninja",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/git-ninja.git"
+    "url": "https://github.com/kabirkhyrul/git-ninja.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/git-ninja/issues"
+    "url": "https://github.com/kabirkhyrul/git-ninja/issues"
   },
   "keywords": [
     "git",
@@ -34,7 +34,11 @@
     "SCM Providers",
     "Other"
   ],
-  "activationEvents": ["onCommand:git-exclude.toggle-exclude", "onCommand:git-exclude.toggle-skip-worktree", "onCommand:git-exclude.checkout-from-branch"],
+  "activationEvents": [
+    "onCommand:git-exclude.toggle-exclude",
+    "onCommand:git-exclude.toggle-skip-worktree",
+    "onCommand:git-exclude.checkout-from-branch"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
