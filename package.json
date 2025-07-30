@@ -2,8 +2,9 @@
   "name": "git-ninja",
   "displayName": "Git Ninja",
   "description": "Advanced Git file management tools: exclude files, skip-worktree, and checkout from branches with ease.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "KabirKhyrul",
+  "icon": "icon.webp",
   "author": {
     "name": "Git Ninja Team"
   },

@@ -2,6 +2,11 @@
 
 All notable changes to the "git-ninja" extension will be documented in this file.
 
+## [1.0.1] - 2025-07-30
+
+### Fixed
+- Removed invalid icon reference that was causing package validation issues
+
 ## [1.0.0] - 2025-07-30
 
 ### Added
