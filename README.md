@@ -23,6 +23,18 @@ Pull specific files from other branches into your current working directory.
 - **Safety first:** Confirms before overwriting with clear warnings
 - **Smart validation:** Checks if file exists in target branch before proceeding
 
+### **Git Cleanup**
+Keep your repository clean by removing stale references and orphaned branches.
+- **Prune remotes:** Remove stale remote-tracking references
+- **Delete orphaned branches:** Find and remove local branches whose remotes are gone
+- **Interactive confirmation:** See exactly what will be deleted before proceeding
+
+### **Clean Ignored Files**
+Remove build artifacts and temporary files listed in `.gitignore`.
+- **Safe preview:** See what will be deleted before executing
+- **Interactive confirmation:** Review file list and confirm deletion
+- **Permanent cleanup:** Uses `git clean -fdX` to remove only ignored files
+
 ## Quick Start
 
 1. **Install** Git Ninja from the VS Code Marketplace
@@ -37,6 +49,8 @@ Pull specific files from other branches into your current working directory.
 | **Git: Toggle .git/info/exclude** | Add/remove files from local exclude list | Personal files you never want to track |
 | **Git: Toggle Skip-Worktree** | Ignore local changes to tracked files | Config files you modify locally |
 | **Git: Checkout File from Branch** | Replace file with version from another branch | Syncing specific files across branches |
+| **Git: Cleanup** | Prune remotes and delete orphaned branches | Maintaining clean repository state |
+| **Git: Clean Ignored Files** | Remove all files listed in .gitignore | Cleaning build artifacts and temp files |
 
 ## Usage Examples
 
@@ -73,6 +87,32 @@ Pull specific files from other branches into your current working directory.
 - .vscode/settings.json (personal VS Code settings)
 - notes.md (your personal project notes)
 - debug.log (temporary debugging files)
+```
+
+### Repository Cleanup
+```bash
+# Before: Manual commands to clean up repository
+# After: One-click cleanup with safety confirmations
+
+# Cleanup workflow:
+1. Run "Git: Cleanup" from Command Palette (Ctrl+Shift+P)
+2. Automatically prunes stale remote references
+3. Shows orphaned local branches (whose remotes are deleted)
+4. Confirm deletion of orphaned branches
+5. Repository is clean and organized
+```
+
+### Clean Ignored Files
+```bash
+# Before: Manual deletion of build artifacts
+# After: Safe, interactive cleanup of ignored files
+
+# Cleanup workflow:
+1. Run "Git: Clean Ignored Files" from Command Palette
+2. Preview what files will be deleted
+3. Option to view complete file list
+4. Confirm deletion with double confirmation
+5. All ignored files (node_modules, dist/, *.log, etc.) are removed
 ```
 
 ## Requirements

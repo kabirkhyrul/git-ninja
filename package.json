@@ -1,8 +1,8 @@
 {
   "name": "git-ninja",
   "displayName": "Git Ninja",
-  "description": "Advanced Git file management tools: exclude files, skip-worktree, and checkout from branches with ease.",
-  "version": "1.0.1",
+  "description": "Advanced Git management tools: exclude files, skip-worktree, checkout from branches, cleanup repositories, and clean ignored files with ease.",
+  "version": "1.1.0",
   "publisher": "KabirKhyrul",
   "icon": "icon.webp",
   "author": {
@@ -23,10 +23,16 @@
     "skip-worktree",
     "checkout",
     "branch",
+    "cleanup",
+    "clean",
+    "prune",
     "version control",
     "file management",
     "ignore files",
-    "git tools"
+    "git tools",
+    "repository management",
+    "gitignore",
+    "orphaned branches"
   ],
   "engines": {
     "vscode": "^1.102.0"
@@ -38,9 +44,13 @@
   "activationEvents": [
     "onCommand:git-exclude.toggle-exclude",
     "onCommand:git-exclude.toggle-skip-worktree",
-    "onCommand:git-exclude.checkout-from-branch"
+    "onCommand:git-exclude.checkout-from-branch",
+    "onCommand:git-exclude.cleanup",
+    "onCommand:git-exclude.clean-ignored",
+    "onCommand:git-exclude.prune-remotes",
+    "onCommand:git-exclude.clean-untracked-ignored"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
@@ -54,6 +64,22 @@
       {
         "command": "git-exclude.checkout-from-branch",
         "title": "Git: Checkout File from Branch"
+      },
+      {
+        "command": "git-exclude.cleanup",
+        "title": "Git: Cleanup (Prune Remotes & Delete Orphaned Branches)"
+      },
+      {
+        "command": "git-exclude.clean-ignored",
+        "title": "Git: Clean Ignored Files (.gitignore)"
+      },
+      {
+        "command": "git-exclude.prune-remotes",
+        "title": "Git: Prune Remotes & Delete Safe Local Branches"
+      },
+      {
+        "command": "git-exclude.clean-untracked-ignored",
+        "title": "Git: Clean Untracked & Ignored Files"
       }
     ],
     "menus": {
@@ -92,8 +118,8 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run build",
-    "build": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
-    "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --watch",
+    "build": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "watch": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch",
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
