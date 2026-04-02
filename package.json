@@ -1,8 +1,8 @@
 {
   "name": "git-ninja",
   "displayName": "Git Ninja",
-  "description": "Advanced Git management tools: exclude files, skip-worktree, checkout from branches, cleanup repositories, and clean ignored files with ease.",
-  "version": "1.1.0",
+  "description": "Generate commit messages with Ollama, toggle file exclude rules, and checkout files from another branch.",
+  "version": "1.2.0",
   "publisher": "KabirKhyrul",
   "icon": "icon.webp",
   "author": {
@@ -17,11 +17,18 @@
   "bugs": {
     "url": "https://github.com/kabirkhyrul/git-ninja/issues"
   },
+  "engines": {
+    "vscode": "^1.110.0"
+  },
+  "categories": [
+    "Other",
+    "SCM Providers"
+  ],
   "keywords": [
     "git",
+    "ollama",
+    "commit-message",
     "exclude",
-    "skip-worktree",
-    "checkout",
     "branch",
     "cleanup",
     "clean",
@@ -34,105 +41,104 @@
     "gitignore",
     "orphaned branches"
   ],
-  "engines": {
-    "vscode": "^1.102.0"
-  },
-  "categories": [
-    "SCM Providers",
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:git-exclude.toggle-exclude",
-    "onCommand:git-exclude.toggle-skip-worktree",
-    "onCommand:git-exclude.checkout-from-branch",
-    "onCommand:git-exclude.cleanup",
-    "onCommand:git-exclude.clean-ignored",
-    "onCommand:git-exclude.prune-remotes",
-    "onCommand:git-exclude.clean-untracked-ignored"
-  ],
   "main": "./dist/extension.js",
+  "extensionDependencies": [
+    "vscode.git"
+  ],
   "contributes": {
     "commands": [
       {
-        "command": "git-exclude.toggle-exclude",
-        "title": "Git: Toggle .git/info/exclude"
+        "command": "gitNinja.generateCommitMessage",
+        "title": "Git Ninja: Generate Commit Message",
+        "icon": "$(chat-sparkle)"
       },
       {
-        "command": "git-exclude.toggle-skip-worktree",
-        "title": "Git: Toggle Skip-Worktree (Ignore Local Changes)"
+        "command": "gitNinja.toggleExcludeFile",
+        "title": "Git Ninja: Toggle Exclude File"
       },
       {
-        "command": "git-exclude.checkout-from-branch",
-        "title": "Git: Checkout File from Branch"
-      },
-      {
-        "command": "git-exclude.cleanup",
-        "title": "Git: Cleanup (Prune Remotes & Delete Orphaned Branches)"
-      },
-      {
-        "command": "git-exclude.clean-ignored",
-        "title": "Git: Clean Ignored Files (.gitignore)"
-      },
-      {
-        "command": "git-exclude.prune-remotes",
-        "title": "Git: Prune Remotes & Delete Safe Local Branches"
-      },
-      {
-        "command": "git-exclude.clean-untracked-ignored",
-        "title": "Git: Clean Untracked & Ignored Files"
+        "command": "gitNinja.checkoutFileFromBranch",
+        "title": "Git Ninja: Checkout File From Branch"
       }
     ],
     "menus": {
-      "explorer/context": [
+      "scm/title": [
         {
-          "command": "git-exclude.toggle-exclude",
-          "when": "resourceScheme == file",
-          "group": "1_git"
-        },
-        {
-          "command": "git-exclude.toggle-skip-worktree",
-          "when": "resourceScheme == file",
-          "group": "1_git"
-        },
-        {
-          "command": "git-exclude.checkout-from-branch",
-          "when": "resourceScheme == file",
-          "group": "1_git"
+          "when": "scmProvider == git",
+          "command": "gitNinja.generateCommitMessage",
+          "group": "navigation"
         }
       ],
-      "scm/resourceState/context": [
+      "explorer/context": [
         {
-          "command": "git-exclude.toggle-exclude",
-          "group": "1_git"
+          "when": "resourceScheme == file",
+          "command": "gitNinja.toggleExcludeFile",
+          "group": "navigation"
         },
         {
-          "command": "git-exclude.toggle-skip-worktree",
-          "group": "1_git"
+          "when": "resourceScheme == file",
+          "command": "gitNinja.checkoutFileFromBranch",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "when": "resourceScheme == file",
+          "command": "gitNinja.toggleExcludeFile",
+          "group": "navigation"
         },
         {
-          "command": "git-exclude.checkout-from-branch",
-          "group": "1_git"
+          "when": "resourceScheme == file",
+          "command": "gitNinja.checkoutFileFromBranch",
+          "group": "navigation"
         }
       ]
+    },
+    "configuration": {
+      "title": "Git Ninja",
+      "properties": {
+        "gitNinja.apiUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:11434/api/generate",
+          "description": "Full Ollama generate API URL."
+        },
+        "gitNinja.model": {
+          "type": "string",
+          "default": "llama3.2",
+          "description": "Ollama model used to generate commit messages."
+        },
+        "gitNinja.systemPrompt": {
+          "type": "string",
+          "default": "You write concise, high-quality conventional commit messages. Return only the final commit message. Prefer a single line. Use imperative mood.",
+          "description": "System prompt sent to Ollama."
+        },
+        "gitNinja.diffMaxChars": {
+          "type": "number",
+          "default": 12000,
+          "minimum": 1000,
+          "description": "Maximum git diff characters included in the prompt."
+        },
+        "gitNinja.debug": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable progress debug output in the Git Ninja output channel."
+        },
+        "gitNinja.applyToAllRepositories": {
+          "type": "boolean",
+          "default": true,
+          "description": "When the command is run without a specific SCM repository context, generate commit messages for all open git repositories."
+        }
+      }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run build",
-    "build": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
-    "watch": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch",
-    "type-check": "tsc --noEmit"
+    "compile": "tsc -p ./ && vsce package",
+    "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
-    "@types/vscode": "^1.102.0",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
-    "@typescript-eslint/eslint-plugin": "^8.31.1",
-    "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^9.25.1",
-    "esbuild": "^0.25.3",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.8.3",
-    "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2"
+    "@types/node": "^25.5.0",
+    "@types/vscode": "^1.110.0",
+    "@vscode/vsce": "^3.7.1",
+    "typescript": "^5.9.3"
   }
 }

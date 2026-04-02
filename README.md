@@ -6,147 +6,40 @@ Git Ninja provides advanced Git file management tools directly in VS Code's cont
 
 ## Features
 
-### **Toggle .git/info/exclude**
-Permanently ignore files locally without affecting `.gitignore` or other team members.
-- **Perfect for:** Personal config files, IDE settings, local notes
-- **Toggles:** Add/remove files from `.git/info/exclude`
-
-### **Skip-Worktree (Recommended)**
-Ignore local changes to tracked files while keeping them in the repository.
-- **Perfect for:** Configuration files you need to modify locally but don't want to commit
-- **Use cases:** `package.json`, `webpack.config.js`, database configs, API endpoints
-- **Benefits:** More reliable than assume-unchanged, designed for this exact purpose
-
-### **Checkout File from Branch**
-Pull specific files from other branches into your current working directory.
-- **Interactive branch selection:** Choose from all available local and remote branches
-- **Safety first:** Confirms before overwriting with clear warnings
-- **Smart validation:** Checks if file exists in target branch before proceeding
-
-### **Git Cleanup**
-Keep your repository clean by removing stale references and orphaned branches.
-- **Prune remotes:** Remove stale remote-tracking references
-- **Delete orphaned branches:** Find and remove local branches whose remotes are gone
-- **Interactive confirmation:** See exactly what will be deleted before proceeding
-
-### **Clean Ignored Files**
-Remove build artifacts and temporary files listed in `.gitignore`.
-- **Safe preview:** See what will be deleted before executing
-- **Interactive confirmation:** Review file list and confirm deletion
-- **Permanent cleanup:** Uses `git clean -fdX` to remove only ignored files
-
-## Quick Start
-
-1. **Install** Git Ninja from the VS Code Marketplace
-2. **Right-click** any file in Explorer or Source Control
-3. **Choose** your Git Ninja command from the context menu
-4. **Follow** the interactive prompts
-
-## Commands
-
-| Command | Description | Best For |
-|---------|-------------|----------|
-| **Git: Toggle .git/info/exclude** | Add/remove files from local exclude list | Personal files you never want to track |
-| **Git: Toggle Skip-Worktree** | Ignore local changes to tracked files | Config files you modify locally |
-| **Git: Checkout File from Branch** | Replace file with version from another branch | Syncing specific files across branches |
-| **Git: Cleanup** | Prune remotes and delete orphaned branches | Maintaining clean repository state |
-| **Git: Clean Ignored Files** | Remove all files listed in .gitignore | Cleaning build artifacts and temp files |
-
-## Usage Examples
-
-### Skip-Worktree for Config Files
-```bash
-# Before: Your package.json changes always show up in git status
-# After: Modify locally, changes are ignored by Git
-
-# Example workflow:
-1. Right-click package.json → "Git: Toggle Skip-Worktree"
-2. Modify your package.json for local development
-3. Git status won't show package.json as modified
-4. Your changes stay local, commits stay clean
-```
-
-### Checkout Specific Files
-```bash
-# Before: git checkout main -- webpack.config.js
-# After: Right-click → "Git: Checkout File from Branch" → Select "main"
-
-# Benefits:
-- Visual branch selection
-- File existence validation
-- Safety confirmations
-- Automatic staging
-```
-
-### Local File Exclusion
-```bash
-# Before: Adding files to .gitignore affects everyone
-# After: Local exclusion affects only you
-
-# Perfect for:
-- .vscode/settings.json (personal VS Code settings)
-- notes.md (your personal project notes)
-- debug.log (temporary debugging files)
-```
-
-### Repository Cleanup
-```bash
-# Before: Manual commands to clean up repository
-# After: One-click cleanup with safety confirmations
-
-# Cleanup workflow:
-1. Run "Git: Cleanup" from Command Palette (Ctrl+Shift+P)
-2. Automatically prunes stale remote references
-3. Shows orphaned local branches (whose remotes are deleted)
-4. Confirm deletion of orphaned branches
-5. Repository is clean and organized
-```
-
-### Clean Ignored Files
-```bash
-# Before: Manual deletion of build artifacts
-# After: Safe, interactive cleanup of ignored files
-
-# Cleanup workflow:
-1. Run "Git: Clean Ignored Files" from Command Palette
-2. Preview what files will be deleted
-3. Option to view complete file list
-4. Confirm deletion with double confirmation
-5. All ignored files (node_modules, dist/, *.log, etc.) are removed
-```
+- Generate a commit message from modified tracked files.
+- Target the selected SCM repository or all open repositories.
+- Write the generated message to the SCM input box and copy it to the clipboard.
+- Toggle `.git/info/exclude` for a file from the editor or explorer context menu.
+- Replace a file with the version from another branch.
 
 ## Requirements
 
-- **VS Code** 1.102.0 or higher
-- **Git** installed and accessible from command line
-- **Git repository** (commands only work within Git repositories)
+- VS Code
+- Git available in `PATH`
+- Ollama available at the configured API URL
 
-## How It Works
+## Settings
 
-Git Ninja leverages Git's built-in features:
+- `gitNinja.apiUrl`
+- `gitNinja.model`
+- `gitNinja.systemPrompt`
+- `gitNinja.diffMaxChars`
+- `gitNinja.debug`
+- `gitNinja.applyToAllRepositories`
 
-- **`.git/info/exclude`** - Git's local exclude file (like .gitignore but personal)
-- **`skip-worktree`** - Git flag to ignore changes to tracked files
-- **`git checkout <branch> -- <file>`** - Git's file checkout command
+## Notes
 
-All operations are performed using standard Git commands, ensuring compatibility and reliability.
+- Commit generation uses modified tracked files only.
+- Newly created files are skipped.
+- If no supported changes exist, no commit message is generated.
 
-## Contributing
+## Usage
 
-Found a bug? Have a feature request? 
+Run `Git Ninja: Generate Commit Message` from the Command Palette.
 
-1. **Issues:** [Report bugs or request features](https://github.com/your-username/git-ninja/issues)
-2. **Pull Requests:** Contributions welcome!
-3. **Feedback:** Help us improve Git Ninja
+From the Source Control title bar, the command runs for the selected repository.
 
-## License
+From the editor or Explorer context menu, you can use:
 
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## Credits
-
-Built with love for the VS Code community.
-
----
-
-**If Git Ninja helps your workflow, please star the repository and leave a review!**
+- `Git Ninja: Toggle Exclude File`
+- `Git Ninja: Checkout File From Branch`
